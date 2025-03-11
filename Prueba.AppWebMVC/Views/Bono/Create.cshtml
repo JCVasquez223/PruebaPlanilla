@@ -1,0 +1,76 @@
+﻿@model Prueba.AppWebMVC.Models.Bono
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Agregar nuevo bono</h1>
+<h4 class="text-center">Detalles del Bono</h4>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="Create" >
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label asp-for="NombreBono" class="form-label fw-bold"></label>
+                    <input asp-for="NombreBono" class="form-control" />
+                    <span asp-validation-for="NombreBono" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Valor" class="form-label fw-bold"></label>
+                    <input asp-for="Valor" class="form-control" />
+                    <span asp-validation-for="Valor" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Estado" class="form-label fw-bold"></label>
+                    <input asp-for="Estado" class="form-control" />
+                    <span asp-validation-for="Estado" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FechaValidacion" class="form-label fw-bold"></label>
+                    <input asp-for="FechaValidacion" class="form-control" type="date" />
+                    <small class="form-text text-muted">Formato: MM-DD-YYYY</small>
+                    <span asp-validation-for="FechaValidacion" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FechaExpiracion" class="form-label fw-bold"></label>
+                    <input asp-for="FechaExpiracion" class="form-control" type="date" />
+                    <small class="form-text text-muted">Formato: MM-DD-YYYY</small>
+                    <span asp-validation-for="FechaExpiracion" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Operacion" class="form-label fw-bold"></label>
+                    <input asp-for="Operacion" class="form-control" />
+                    <span asp-validation-for="Operacion" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Planilla" class="form-label fw-bold"></label>
+                    <input asp-for="Planilla" class="form-control" />
+                    <span asp-validation-for="Planilla" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="fas fa-plus-circle"></i> Crear
+                </button>
+                <a asp-action="Index" class="btn btn-danger px-4">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
