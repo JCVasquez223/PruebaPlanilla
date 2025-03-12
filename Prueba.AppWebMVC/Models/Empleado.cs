@@ -7,33 +7,33 @@ public partial class Empleado
 {
     public int Id { get; set; }
 
-    public int? JefeInmediatoId { get; set; }
+    public int? JefeInmediatoId { get; set; } = null!;
 
-    public int TipoDeHorarioId { get; set; }
+    public int? TipoDeHorarioId { get; set; }
 
-    public int Dui { get; set; }
+    public int? Dui { get; set; }
 
-    public string Nombre { get; set; } = null!;
+    public string? Nombre { get; set; } = null!;
 
-    public string Apellido { get; set; } = null!;
+    public string? Apellido { get; set; } = null!;
 
-    public string Telefono { get; set; } = null!;
+    public string? Telefono { get; set; } = null!;
 
     public string? Correo { get; set; }
 
-    public byte Estado { get; set; }
+    public byte? Estado { get; set; }
 
-    public DateOnly FechaContraInicial { get; set; }
+    public DateTime FechaContraInicial { get; set; }
 
-    public DateOnly FechaContraFinal { get; set; }
+    public DateTime FechaContraFinal { get; set; }
 
-    public string Usuario { get; set; } = null!;
+    public string? Usuario { get; set; } = null!;
 
-    public string Contraseña { get; set; } = null!;
+    public string? Contraseña { get; set; } = null!;
 
-    public decimal SalarioBase { get; set; }
+    public decimal? SalarioBase { get; set; }
 
-    public int PuestoTrabajoId { get; set; }
+    public int? PuestoTrabajoId { get; set; }
 
     public virtual ICollection<AsignacionBono> AsignacionBonos { get; set; } = new List<AsignacionBono>();
 
