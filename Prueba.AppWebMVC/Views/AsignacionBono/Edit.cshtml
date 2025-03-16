@@ -1,0 +1,58 @@
+﻿    @model Prueba.AppWebMVC.Models.AsignacionBono
+
+    @{
+        ViewData["Title"] = "Edit";
+    }
+
+    <div class="container mt-4">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Editar Asignación de Bonos</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Empleado: <strong>@ViewBag.EmpleadoNombre</strong></h5>
+                <hr />
+
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="EmpleadosId" />
+
+                    <!-- Lista de bonos con checkboxes -->
+                    <fieldset class="form-group">
+                        <legend class="col-form-label pt-0 font-weight-bold">Bonos Asignados</legend>
+                        <div class="border rounded p-3">
+                            @foreach (var bono in ViewBag.BonosDisponibles)
+                            {
+                                bool isChecked = ViewBag.BonosAsignados.Contains(bono.Id);
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="bonosSeleccionados" value="@bono.Id" @(isChecked ? "checked" : "") />
+                                    <label class="form-check-label">@bono.NombreBono</label>
+                                </div>
+                            }
+                        </div>
+                    </fieldset>
+
+                    <!-- Estado de la asignación -->
+                    <div class="form-group">
+                        <label asp-for="Estado" class="font-weight-bold"></label>
+                        <input asp-for="Estado" class="form-control" placeholder="Ingrese el estado de la asignación" />
+                        <span asp-validation-for="Estado" class="text-danger"></span>
+                    </div>
+
+                    <!-- Botón de guardar -->
+                    <div class="d-flex justify-content-between">
+
+                        <a asp-controller="Empleado" asp-action="Index" class="btn btn-outline-secondary">← Volver a la lista</a>
+                        <button type="submit" class="btn btn-success"> Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
