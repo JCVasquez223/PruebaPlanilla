@@ -4,14 +4,6 @@
     ViewData["Title"] = "Asignar Descuentos";
 }
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-warning">
-        @TempData["ErrorMessage"]
-        <a href="@Url.Action("Index", "AsignacionDescuento")" class="btn btn-primary btn-sm">Ir a Modificar</a>
-    </div>
-}
-
 <div class="container mt-4">
     <div class="card shadow">
         <div class="card-header bg-danger text-white">
@@ -62,8 +54,8 @@
                                             </td>
                                             <td>@descuento.Nombre</td>
                                             <td>@descuento.Valor.ToString("C")</td>
-                                            <td>@descuento.Operacion</td>
-                                            <td>@descuento.Planilla</td>
+                                            <td>@descuento.OperacionTexto</td>
+                                            <td>@descuento.PlanillaTexto</td>
                                         </tr>
                                     }
                                 }

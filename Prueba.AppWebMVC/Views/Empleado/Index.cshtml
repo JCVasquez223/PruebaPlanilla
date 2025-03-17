@@ -107,7 +107,7 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     <a asp-controller="Empleado" asp-action="VerificarBono" asp-route-empleadoId="@item.Id">Asignar Bono</a>
-                    <a asp-controller="AsignacionDescuento" asp-action="Create" asp-route-empleadoId="@item.Id">Asignar descuento</a>
+                    <a asp-controller="Empleado" asp-action="VerificarDescuento" asp-route-empleadoId="@item.Id">Asignar descuento</a>
             </td>
         </tr>
 }

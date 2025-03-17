@@ -19,25 +19,36 @@ namespace Prueba.AppWebMVC.Controllers
         }
 
         // GET: Bono
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Bono bono, int topRegistro = 10)
         {
-            return View(await _context.Bonos.ToListAsync());
+            var query = _context.Bonos.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(bono.NombreBono))
+                query = query.Where(s => s.NombreBono.Contains(bono.NombreBono));
+
+            if (bono.Planilla > 0)
+                query = query.Where(s => s.Planilla == bono.Planilla);
+
+            if (bono.Estado > 0)
+                query = query.Where(s => s.Estado == bono.Estado);
+
+            if (bono.Operacion > 0)
+                query = query.Where(s => s.Operacion == bono.Operacion);
+
+            if (topRegistro > 0)
+                query = query.Take(topRegistro);
+
+            Listado();
+            return View(await query.ToListAsync());
         }
 
         // GET: Bono/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var bono = await _context.Bonos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bono == null)
-            {
-                return NotFound();
-            }
+            var bono = await _context.Bonos.FirstOrDefaultAsync(m => m.Id == id);
+            if (bono == null) return NotFound();
 
             return View(bono);
         }
@@ -45,12 +56,11 @@ namespace Prueba.AppWebMVC.Controllers
         // GET: Bono/Create
         public IActionResult Create()
         {
+            Listado();
             return View();
         }
 
         // POST: Bono/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NombreBono,Valor,Estado,FechaValidacion,FechaExpiracion,Operacion,Planilla")] Bono bono)
@@ -61,36 +71,28 @@ namespace Prueba.AppWebMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            Listado();
             return View(bono);
         }
 
         // GET: Bono/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var bono = await _context.Bonos.FindAsync(id);
-            if (bono == null)
-            {
-                return NotFound();
-            }
+            if (bono == null) return NotFound();
+
+            Listado();
             return View(bono);
         }
 
         // POST: Bono/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NombreBono,Valor,Estado,FechaValidacion,FechaExpiracion,Operacion,Planilla")] Bono bono)
         {
-            if (id != bono.Id)
-            {
-                return NotFound();
-            }
+            if (id != bono.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -101,34 +103,23 @@ namespace Prueba.AppWebMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BonoExists(bono.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!BonoExists(bono.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+          
             return View(bono);
         }
 
         // GET: Bono/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var bono = await _context.Bonos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bono == null)
-            {
-                return NotFound();
-            }
+            var bono = await _context.Bonos.FirstOrDefaultAsync(m => m.Id == id);
+            if (bono == null) return NotFound();
 
             return View(bono);
         }
@@ -139,10 +130,7 @@ namespace Prueba.AppWebMVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var bono = await _context.Bonos.FindAsync(id);
-            if (bono != null)
-            {
-                _context.Bonos.Remove(bono);
-            }
+            if (bono != null) _context.Bonos.Remove(bono);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -151,6 +139,27 @@ namespace Prueba.AppWebMVC.Controllers
         private bool BonoExists(int id)
         {
             return _context.Bonos.Any(e => e.Id == id);
+        }
+
+        private void Listado()
+        {
+            ViewBag.Operaciones = new List<SelectListItem>
+            {   
+                new SelectListItem { Value = "1", Text = "Operacion Fija" },
+                new SelectListItem { Value = "2", Text = "Operacion No Fija" }
+            };
+
+            ViewBag.Estados = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Activo" },
+                new SelectListItem { Value = "2", Text = "Inactivo" }
+            };
+
+            ViewBag.Planillas = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Mensual" },
+                new SelectListItem { Value = "2", Text = "Quincenal" }
+            };
         }
     }
 }

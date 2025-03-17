@@ -203,28 +203,23 @@ namespace Prueba.AppWebMVC.Controllers
 
             if (asignacionBono != null)
             {
-                // Si ya tiene bono, redirige a la vista de edición del bono usando el ID de la asignación
                 return RedirectToAction("Edit", "AsignacionBono", new { id = asignacionBono.Id });
             }
 
-            // Si no tiene bono, permite la asignación
             return RedirectToAction("Create", "AsignacionBono", new { empleadoId });
         }
 
         public async Task<IActionResult> VerificarDescuento(int empleadoId)
         {
-            // Buscar si el empleado ya tiene un descuento asignado
             var descuento = await _context.AsignacionDescuentos
                 .FirstOrDefaultAsync(d => d.EmpleadosId == empleadoId);
 
             if (descuento != null)
             {
-                // Si ya tiene descuento, redirige a la vista de edición del descuento usando su ID
-                return RedirectToAction("Edit", "Descuento", new { id = descuento.Id });
+                return RedirectToAction("Edit", "AsignacionDescuento", new { id = descuento.Id });
             }
 
-            // Si no tiene descuento, permite la asignación
-            return RedirectToAction("Create", "Descuento", new { empleadoId });
+            return RedirectToAction("Create", "AsignacionDescuento", new { empleadoId });
         }
 
 

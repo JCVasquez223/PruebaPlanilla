@@ -67,45 +67,78 @@ namespace Prueba.AppWebMVC.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = "Descuentos asignados correctamente.";
+            return RedirectToAction("Index", "Empleado");
         }
 
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            var asignacionDescuento = await _context.AsignacionDescuentos.FindAsync(id);
-            if (asignacionDescuento == null) return NotFound();
+            // Obtener la asignación de descuento
+            var asignacionDescuento = await _context.AsignacionDescuentos
+                .Include(a => a.Descuentos)
+                .Include(a => a.Empleados)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-            ViewData["DescuentosId"] = new SelectList(_context.Descuentos, "Id", "Nombre", asignacionDescuento.DescuentosId);
-            ViewData["EmpleadosId"] = new SelectList(_context.Empleados, "Id", "NombreCompleto", asignacionDescuento.EmpleadosId);
+            if (asignacionDescuento == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener todos los descuentos disponibles
+            var descuentosDisponibles = await _context.Descuentos.ToListAsync();
+
+            // Obtener los descuentos ya asignados al empleado
+            var descuentosAsignados = await _context.AsignacionDescuentos
+                .Where(a => a.EmpleadosId == asignacionDescuento.EmpleadosId)
+                .Select(a => a.DescuentosId)
+                .ToListAsync();
+
+            // Pasar los datos a la vista
+            ViewBag.DescuentosDisponibles = descuentosDisponibles;
+            ViewBag.DescuentosAsignados = descuentosAsignados;
+            ViewBag.EmpleadoNombre = $"{asignacionDescuento.Empleados.Nombre} {asignacionDescuento.Empleados.Apellido}";
+
             return View(asignacionDescuento);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmpleadosId,DescuentosId")] AsignacionDescuento asignacionDescuento)
+        public async Task<IActionResult> Edit(int id, List<int> descuentosSeleccionados)
         {
-            if (id != asignacionDescuento.Id) return NotFound();
+            // Obtener la asignación de descuento existente
+            var asignacionDescuento = await _context.AsignacionDescuentos
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (ModelState.IsValid)
+            if (asignacionDescuento == null)
             {
-                try
-                {
-                    _context.Update(asignacionDescuento);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AsignacionDescuentoExists(asignacionDescuento.Id)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            ViewData["DescuentosId"] = new SelectList(_context.Descuentos, "Id", "Nombre", asignacionDescuento.DescuentosId);
-            ViewData["EmpleadosId"] = new SelectList(_context.Empleados, "Id", "NombreCompleto", asignacionDescuento.EmpleadosId);
-            return View(asignacionDescuento);
+
+            // Eliminar los descuentos previamente asignados
+            var descuentosPrevios = _context.AsignacionDescuentos
+                .Where(a => a.EmpleadosId == asignacionDescuento.EmpleadosId)
+                .ToList();
+
+            _context.AsignacionDescuentos.RemoveRange(descuentosPrevios);
+
+            // Agregar los nuevos descuentos seleccionados
+            foreach (var descuentoId in descuentosSeleccionados)
+            {
+                _context.AsignacionDescuentos.Add(new AsignacionDescuento
+                {
+                    EmpleadosId = asignacionDescuento.EmpleadosId,
+                    DescuentosId = descuentoId
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)

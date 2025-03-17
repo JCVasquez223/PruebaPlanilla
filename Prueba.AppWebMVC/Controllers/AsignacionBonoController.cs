@@ -42,63 +42,44 @@ namespace Prueba.AppWebMVC.Controllers
         }
 
         // GET: AsignacionBono/Create
-        public IActionResult Create(int? empleadoId)
+        public  IActionResult Create(int? empleadoId)
         {
-            if (empleadoId == null)
-            {
-                return NotFound();
-            }
+            var empleado = _context.Empleados.Find(empleadoId);
 
-            var empleado = _context.Empleados
-                .Include(e => e.PuestoTrabajo).FirstOrDefault(e => e.Id == empleadoId);
-
-            if (empleado == null)
-            {
-                return NotFound();
-            }
-
-            var bonos = _context.Bonos.ToList();
-
-            ViewBag.EmpleadoId = empleadoId;
-            ViewBag.EmpleadoNombre = $"{empleado.Nombre} {empleado.Apellido}";
+            ViewBag.EmpleadoId = empleado.Id;
+            ViewBag.EmpleadoNombre = empleado.Nombre;
             ViewBag.EmpleadoDUI = empleado.Dui;
-            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo?.NombrePuesto;
+            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo;
             ViewBag.EmpleadoSalario = empleado.SalarioBase;
-            ViewBag.Bonos = bonos;
-
+            ViewBag.Bonos = _context.Bonos.ToList();
 
             return View();
         }
 
         // POST: AsignacionBono/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int empleadoId, List<int> bonosSeleccionados)
         {
             if (empleadoId == 0 || bonosSeleccionados == null || !bonosSeleccionados.Any())
             {
-                ModelState.AddModelError("", "Debe seleccionar al menos un bono.");
-                ViewBag.Bonos = _context.Bonos.ToList();
-                return View();
+                TempData["ErrorMessage"] = "Debe seleccionar al menos un bono.";
+                return RedirectToAction("Create", new { empleadoId });
             }
 
-
-
-            // Asignar los bonos seleccionados al empleado
             foreach (var bonoId in bonosSeleccionados)
             {
                 var asignacionBono = new AsignacionBono
                 {
                     EmpleadosId = empleadoId,
                     BonosId = bonoId,
-                    Estado = 1 // Estado activo
+
                 };
                 _context.AsignacionBonos.Add(asignacionBono);
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Bonos asignados correctamente.";
             return RedirectToAction("Index", "Empleado");
         }
         // GET: AsignacionBono/Edit/5

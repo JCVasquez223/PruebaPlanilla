@@ -3,13 +3,6 @@
 @{
     ViewData["Title"] = "Asignar Bonos";
 }
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-warning">
-        @TempData["ErrorMessage"]
-        <a href="@Url.Action("Index", "AsignacionBono")" class="btn btn-primary btn-sm">Ir a Modificar</a>
-    </div>
-}
 
 
 <div class="container mt-4">
@@ -48,10 +41,12 @@
                                     <th>Seleccionar</th>
                                     <th>Nombre del Bono</th>
                                     <th>Valor</th>
+                                    <th>Operación</th>
+                                    <th>Planilla</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (ViewBag.Bonos != null && ((List<Bono>)ViewBag.Bonos).Any())
+                               @if (ViewBag.Bonos != null && ((List<Bono>)ViewBag.Bonos).Any())
                                 {
                                     foreach (var bono in (List<Bono>)ViewBag.Bonos)
                                     {
@@ -59,15 +54,18 @@
                                             <td class="text-center">
                                                 <input type="checkbox" name="bonosSeleccionados" value="@bono.Id" class="form-check-input" />
                                             </td>
+
                                             <td>@bono.NombreBono</td>
                                             <td>@bono.Valor.ToString("C")</td>
+                                            <td>@bono.OperacionTexto</td>
+                                            <td>@bono.PlanillaTexto</td>
                                         </tr>
                                     }
                                 }
                                 else
                                 {
                                     <tr>
-                                        <td colspan="3" class="text-center text-muted">No hay bonos disponibles.</td>
+                                        <td colspan="5" class="text-center text-muted">No hay descuentos disponibles.</td>
                                     </tr>
                                 }
                             </tbody>
