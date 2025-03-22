@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Prueba.AppWebMVC.Models;
 
@@ -33,6 +34,7 @@ public partial class Empleado
 
     public decimal? SalarioBase { get; set; }
 
+    [Display(Name = "Puesto trabajo")]
     public int? PuestoTrabajoId { get; set; }
 
     public virtual ICollection<AsignacionBono>? AsignacionBonos { get; set; } = new List<AsignacionBono>();

@@ -17,13 +17,21 @@
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Planilla</label>
-                <select name="planilla" class="form-control" asp-items="ViewBag.Planillas"></select>
+                <select name="planilla" class="form-control">
+                    <option value="0">--- Seleccionar ---</option>
+                    <option value="1">Planilla Mensual</option>
+                    <option value="2">Planilla Quincenal</option>
+                </select>
             </div>
         </div>
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Estado</label>
-                <select name="estado" class="form-control" asp-items="ViewBag.Estados"></select>
+                <select name="estado" class="form-control">
+                    <option value="0">--- Seleccionar ---</option>
+                    <option value="1">Activo</option>
+                    <option value="2">Inactivo</option>
+                </select>
             </div>
         </div>
     </div>
@@ -31,7 +39,11 @@
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Operación</label>
-                <select name="operacion" class="form-control" asp-items="ViewBag.Operaciones"></select>
+                <select name="operacion" class="form-control">
+                    <option value="0">--- Seleccionar ---</option>
+                    <option value="1">Operación Fija</option>
+                    <option value="2">Operación No Fija</option>
+                </select>
             </div>
         </div>
         <div class="col-4">
@@ -48,7 +60,6 @@
         </div>
     </div>
 
-    <!--AQUI  TERMINA  -->
     <div class="row mt-3">
         <div class="col-12">
             <input type="submit" value="Buscar" class="btn btn-primary" />
@@ -81,8 +92,6 @@
                 <td>@Html.DisplayFor(modelItem => item.FechaExpiracion)</td>
                 <td>@item.OperacionTexto</td>
                 <td>@item.PlanillaTexto</td>
-
-
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
                         <i class="fas fa-edit"></i> Editar
@@ -98,3 +107,11 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+}

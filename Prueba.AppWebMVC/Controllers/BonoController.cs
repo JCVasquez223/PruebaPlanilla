@@ -38,7 +38,7 @@ namespace Prueba.AppWebMVC.Controllers
             if (topRegistro > 0)
                 query = query.Take(topRegistro);
 
-            Listado();
+        
             return View(await query.ToListAsync());
         }
 
@@ -56,7 +56,7 @@ namespace Prueba.AppWebMVC.Controllers
         // GET: Bono/Create
         public IActionResult Create()
         {
-            Listado();
+            
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace Prueba.AppWebMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            Listado();
+            
             return View(bono);
         }
 
@@ -83,7 +83,7 @@ namespace Prueba.AppWebMVC.Controllers
             var bono = await _context.Bonos.FindAsync(id);
             if (bono == null) return NotFound();
 
-            Listado();
+
             return View(bono);
         }
 
@@ -141,25 +141,25 @@ namespace Prueba.AppWebMVC.Controllers
             return _context.Bonos.Any(e => e.Id == id);
         }
 
-        private void Listado()
-        {
-            ViewBag.Operaciones = new List<SelectListItem>
-            {   
-                new SelectListItem { Value = "1", Text = "Operacion Fija" },
-                new SelectListItem { Value = "2", Text = "Operacion No Fija" }
-            };
+        //private void Listado()
+        //{
+        //    ViewBag.Operaciones = new List<SelectListItem>
+        //    {   
+        //        new SelectListItem { Value = "1", Text = "Operacion Fija" },
+        //        new SelectListItem { Value = "2", Text = "Operacion No Fija" }
+        //    };
 
-            ViewBag.Estados = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Activo" },
-                new SelectListItem { Value = "2", Text = "Inactivo" }
-            };
+        //    ViewBag.Estados = new List<SelectListItem>
+        //    {
+        //        new SelectListItem { Value = "1", Text = "Activo" },
+        //        new SelectListItem { Value = "2", Text = "Inactivo" }
+        //    };
 
-            ViewBag.Planillas = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Mensual" },
-                new SelectListItem { Value = "2", Text = "Quincenal" }
-            };
-        }
+        //    ViewBag.Planillas = new List<SelectListItem>
+        //    {
+        //        new SelectListItem { Value = "1", Text = "Mensual" },
+        //        new SelectListItem { Value = "2", Text = "Quincenal" }
+        //    };
+        //}
     }
 }

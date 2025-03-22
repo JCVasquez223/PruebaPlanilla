@@ -42,16 +42,22 @@ namespace Prueba.AppWebMVC.Controllers
         }
 
         // GET: AsignacionBono/Create
-        public  IActionResult Create(int? empleadoId)
+        public  IActionResult Create(int? empleadoId )
         {
-            var empleado = _context.Empleados.Find(empleadoId);
+
+            if (empleadoId==null)
+            {
+                return NotFound();
+            }
+            var empleado = _context.Empleados.Include(e=>e.PuestoTrabajo). FirstOrDefault(e=> e.Id==empleadoId);
 
             ViewBag.EmpleadoId = empleado.Id;
             ViewBag.EmpleadoNombre = empleado.Nombre;
             ViewBag.EmpleadoDUI = empleado.Dui;
-            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo;
+            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo.NombrePuesto;
             ViewBag.EmpleadoSalario = empleado.SalarioBase;
             ViewBag.Bonos = _context.Bonos.ToList();
+
 
             return View();
         }

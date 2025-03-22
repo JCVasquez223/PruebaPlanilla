@@ -30,7 +30,11 @@
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" name="descuentosSeleccionados" value="@descuento.Id" @(isChecked ? "checked" : "") />
                                     <label class="form-check-label">
-                                        @descuento.Nombre - <strong>@descuento.Valor.ToString("C")</strong>
+                                        @descuento.Nombre - <strong>@descuento.Valor.ToString("$0.00")</strong>
+                                        <br />
+                                        <small class="text-muted">
+                                            Planilla: @descuento.PlanillaTexto | Operación: @descuento.OperacionTexto
+                                        </small>
                                     </label>
                                 </div>
                             }

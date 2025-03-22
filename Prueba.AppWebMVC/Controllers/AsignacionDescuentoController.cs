@@ -26,19 +26,20 @@ namespace Prueba.AppWebMVC.Controllers
             return View(await descuentos.ToListAsync());
         }
 
-        public IActionResult Create(int empleadoId)
+        public IActionResult Create(int? empleadoId)
         {
-            var empleado = _context.Empleados.Find(empleadoId);
-            if (empleado == null)
+            if (empleadoId == null)
             {
-                TempData["ErrorMessage"] = "El empleado no existe.";
-                return RedirectToAction("Index");
+                return NotFound();
             }
+
+            var empleado = _context.Empleados.Include(e => e.PuestoTrabajo).FirstOrDefault(e => e.Id == empleadoId);
+
 
             ViewBag.EmpleadoId = empleado.Id;
             ViewBag.EmpleadoNombre = empleado.Nombre;
             ViewBag.EmpleadoDUI = empleado.Dui;
-            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo;
+            ViewBag.EmpleadoPuesto = empleado.PuestoTrabajo.NombrePuesto;
             ViewBag.EmpleadoSalario = empleado.SalarioBase;
             ViewBag.Descuentos = _context.Descuentos.ToList();
 
