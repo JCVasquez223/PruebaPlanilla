@@ -1,24 +1,49 @@
 ﻿@model Prueba.AppWebMVC.Models.TipoPlanilla
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Tipo de Planilla";
 }
 
-<h1>Details</h1>
+<h1 class="text-center my-4 text-primary">Detalles del Tipo de Planilla</h1>
 
-<div>
-    <h4>TipoPlanilla</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreTipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NombreTipo)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4 border-primary">
+            <h3 class="text-center mb-4">Información del Tipo de Planilla</h3>
+            <dl class="row">
+                <dt class="col-sm-4 fw-bold">
+                    @Html.DisplayNameFor(model => model.NombreTipo)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.NombreTipo)
+                </dd>
+                <dt class="col-sm-4 fw-bold">
+                    Estado
+                </dt>
+                <dd class="col-sm-8">
+                    @(Model.Activo ? "Activo" : "Inactivo")
+                </dd>
+                <dt class="col-sm-4 fw-bold">
+                    @Html.DisplayNameFor(model => model.FechaCreacion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaCreacion)
+                </dd>
+                <dt class="col-sm-4 fw-bold">
+                    @Html.DisplayNameFor(model => model.FechaModificacion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaModificacion)
+                </dd>
+            </dl>
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning px-4">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

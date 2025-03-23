@@ -1,33 +1,36 @@
 ﻿@model Prueba.AppWebMVC.Models.TipoPlanilla
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Tipo de Planilla";
 }
 
-<h1>Create</h1>
-
-<h4>TipoPlanilla</h4>
+<h1 class="text-center">Crear Tipo de Planilla</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Create" class="shadow p-4 rounded bg-light">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NombreTipo" class="control-label"></label>
-                <input asp-for="NombreTipo" class="form-control" />
-                <span asp-validation-for="NombreTipo" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="NombreTipo" class="form-label fw-bold">Nombre del Tipo de Planilla</label>
+                <input asp-for="NombreTipo" class="form-control" placeholder="Ingresa el nombre del tipo de planilla" />
+                <span asp-validation-for="NombreTipo" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary w-50"><i class="fas fa-save"></i> Crear</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="text-center mt-3">
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
