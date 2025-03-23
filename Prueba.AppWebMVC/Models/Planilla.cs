@@ -42,13 +42,7 @@ namespace Prueba.AppWebMVC.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalPago { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Fecha de Creación")] 
-        public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
-
-        [NotMapped]
-        [Display(Name = "Fecha de Última Modificación")]
-        public DateTime? FechaModificacion { get; set; } 
+       
 
         
         public virtual ICollection<EmpleadoPlanilla> EmpleadoPlanillas { get; set; }
@@ -70,13 +64,11 @@ namespace Prueba.AppWebMVC.Models
         public void Autorizar()
         {
             Autorizacion = 1; 
-            FechaModificacion = DateTime.UtcNow; 
         }
 
         public void Desautorizar()
         {
             Autorizacion = 0; 
-            FechaModificacion = DateTime.UtcNow;
         }
 
         public bool EstaActiva()

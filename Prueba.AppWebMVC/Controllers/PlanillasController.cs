@@ -56,7 +56,7 @@ namespace Prueba.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NombrePlanilla,TipoPlanillaId,FechaInicio,FechaFin,Autorizacion,TotalPago,FechaCreacion,FechaModificacion")] Planilla planilla)
+        public async Task<IActionResult> Create([Bind("Id,NombrePlanilla,TipoPlanillaId,FechaInicio,FechaFin,Autorizacion,TotalPago")] Planilla planilla)
         {
             if (ModelState.IsValid)
             {
