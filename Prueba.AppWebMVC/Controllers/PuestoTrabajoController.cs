@@ -19,21 +19,30 @@ namespace Prueba.AppWebMVC.Controllers
         }
 
         // GET: PuestoTrabajo
-        public async Task<IActionResult> Index()
+        // Controlador actualizado para PuestoTrabajo
+        public async Task<IActionResult> Index(string nombrePuesto, byte estado = 2, int top = 10)
         {
-
-            var estados = new Dictionary<byte, string>
+            var estados = new Dictionary<byte, string> 
             {
-                {1, "Activo " },
-                {0, "Inactivo" },
-            };
+                  { 1, "Activo" },
+                  { 0, "Inactivo" }
+             };
 
             ViewBag.Estados = estados;
 
-            var puestos = await _context.PuestoTrabajos.ToListAsync();
-          
-            return View(puestos);
+            var query = _context.PuestoTrabajos.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(nombrePuesto))
+                query = query.Where(p => p.NombrePuesto.Contains(nombrePuesto));
+
+            if (estado != 2) // 2 indica "Todos los estados"
+                query = query.Where(p => p.Estado == estado);
+
+            query = query.Take(top);
+
+            return View(await query.ToListAsync());
         }
+
 
         // GET: PuestoTrabajo/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -66,9 +75,7 @@ namespace Prueba.AppWebMVC.Controllers
             return View();
         }
 
-        // POST: PuestoTrabajo/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NombrePuesto,SalarioBase,ValorxHora,ValorExtra,Estado")] PuestoTrabajo puestoTrabajo)
@@ -106,9 +113,6 @@ namespace Prueba.AppWebMVC.Controllers
             return View(puestoTrabajo);
         }
 
-        // POST: PuestoTrabajo/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NombrePuesto,SalarioBase,ValorxHora,ValorExtra,Estado")] PuestoTrabajo puestoTrabajo)

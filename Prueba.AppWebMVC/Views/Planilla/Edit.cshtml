@@ -34,24 +34,18 @@
                 <span asp-validation-for="FechaFin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Autorizacion" class="control-label"></label>
-                <input asp-for="Autorizacion" class="form-control" />
+                <label asp-for="Autorizacion" class="form-label fw-bold">Autorizacion</label>
+                <select asp-for="Autorizacion" class="form-select shadow-sm">
+                    <option value="0"> ---Seleccionnar---</option>
+                    <option value="1"> Autorizado</option>
+                    <option value="2"> No autorizado</option>
+                </select>
                 <span asp-validation-for="Autorizacion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TotalPago" class="control-label"></label>
                 <input asp-for="TotalPago" class="form-control" />
                 <span asp-validation-for="TotalPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaCreacion" class="control-label"></label>
-                <input asp-for="FechaCreacion" class="form-control" />
-                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaModificacion" class="control-label"></label>
-                <input asp-for="FechaModificacion" class="form-control" />
-                <span asp-validation-for="FechaModificacion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

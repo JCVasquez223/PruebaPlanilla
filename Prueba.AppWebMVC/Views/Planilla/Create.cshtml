@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TipoPlanillaId" class="control-label"></label>
-                <select asp-for="TipoPlanillaId" class ="form-control" asp-items="ViewBag.NombreTipo"></select>
+                <select asp-for="TipoPlanillaId" class ="form-control" asp-items="ViewBag.TipoPlanillaId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="FechaInicio" class="control-label"></label>
@@ -31,17 +31,12 @@
                 <input asp-for="FechaFin" class="form-control" />
                 <span asp-validation-for="FechaFin" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Autorizacion" class="control-label"></label>
-                <input asp-for="Autorizacion" class="form-control" />
-                <span asp-validation-for="Autorizacion" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <label asp-for="TotalPago" class="control-label"></label>
                 <input asp-for="TotalPago" class="form-control" />
                 <span asp-validation-for="TotalPago" class="text-danger"></span>
             </div>
-           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
